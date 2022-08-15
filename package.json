@@ -1,22 +1,22 @@
 {
-  "name": "@uniswap/v2-periphery",
+  "name": "@gton-capital/ogs-periphery",
   "version": "1.1.0-beta.0",
   "description": "🎚 Peripheral smart contracts for interacting with Uniswap V2",
   "engines": {
     "node": ">=10"
   },
-  "homepage": "https://uniswap.org",
+  "homepage": "https://gton.capital",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Uniswap/uniswap-v2-periphery"
+    "url": "https://github.com/GTON-capital/ogs-periphery"
   },
   "files": [
     "build",
     "contracts"
   ],
   "dependencies": {
-    "@uniswap/lib": "4.0.1-alpha",
-    "@uniswap/v2-core": "1.0.0"
+    "@gton-capital/ogs-core": "gton-capital/ogs-core#395676c",
+    "@uniswap/lib": "4.0.1-alpha"
   },
   "devDependencies": {
     "@types/chai": "^4.2.6",
