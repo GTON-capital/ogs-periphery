@@ -1,7 +1,7 @@
 {
   "name": "@gton-capital/ogs-periphery",
   "version": "1.1.0-beta.0",
-  "description": "🎚 Peripheral smart contracts for interacting with Uniswap V2",
+  "description": "🎚 Peripheral smart contracts for interacting with OGS",
   "engines": {
     "node": ">=10"
   },
