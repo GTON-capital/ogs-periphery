@@ -15,7 +15,7 @@
     "contracts"
   ],
   "dependencies": {
-    "@gton-capital/ogs-core": "gton-capital/ogs-core#395676c",
+    "@gton-capital/ogs-core": "gton-capital/ogs-core#17d1a07",
     "@uniswap/lib": "4.0.1-alpha"
   },
   "devDependencies": {

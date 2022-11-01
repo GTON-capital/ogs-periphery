@@ -392,9 +392,9 @@
     "@ethersproject/properties" "^5.7.0"
     "@ethersproject/strings" "^5.7.0"
 
-"@gton-capital/ogs-core@gton-capital/ogs-core#395676c":
+"@gton-capital/ogs-core@gton-capital/ogs-core#17d1a07":
   version "1.0.1"
-  resolved "https://codeload.github.com/gton-capital/ogs-core/tar.gz/395676cfeb73027230c35fff81484b901c8fc108"
+  resolved "https://codeload.github.com/gton-capital/ogs-core/tar.gz/17d1a074210286f6e1b496dd27b2e2a3b1cad844"
 
 "@nomiclabs/ethereumjs-vm@4.2.2":
   version "4.2.2"
