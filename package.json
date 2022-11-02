@@ -48,7 +48,8 @@
     "pretest": "yarn compile",
     "test": "mocha",
     "prepublishOnly": "yarn test",
-    "deploy:gton": "hardhat run --network gton ./scripts/deploy-script.js"
+    "deploy:gton": "hardhat run --network gton ./scripts/deploy-script.js",
+    "deploy:gtonTestnet": "hardhat run --network gtonTestnet ./scripts/deploy-script.js"
   },
   "license": "GPL-3.0-or-later"
 }

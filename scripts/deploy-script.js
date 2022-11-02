@@ -9,8 +9,8 @@ async function deploy() {
   let deployer = await getDeployer()
   let deployerAddress = deployer.address
 
-  // await deployRouter01()
-  // await deployRouter02()
+  await deployRouter01()
+  await deployRouter02()
 }
 
 async function getDeployer() {

@@ -1,6 +1,6 @@
 var config = {
-  OGSFactory: '0xb5b841E3C3DA1b3D7D24DCedAA62Dc5C99ca1429',
-  WGCD: '0xeFF66B4A84C8a6b69b99EB1C5e39aF8fc35d13db'
+  OGSFactory: '0xE29d8E111b6f47611Db283C2687943a3503B4A66',
+  WGCD: '0x6b2a64c134bae278b4f28240f305f6cecfeafe7a'
 }
 
 module.exports = {

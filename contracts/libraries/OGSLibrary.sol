@@ -21,7 +21,7 @@ library OGSLibrary {
                 hex'ff',
                 factory,
                 keccak256(abi.encodePacked(token0, token1)),
-                hex'af1128d677ede9071b023e7c88ab01ce822277230813f56a1af72e703be0c343' // init code hash
+                hex'b345d92c2d04f01c237dfc25ab4adf6b5b668496d0634d8944cc63d1b6de83f3' // init code hash
             ))));
     }
 
