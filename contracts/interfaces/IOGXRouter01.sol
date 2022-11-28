@@ -1,6 +1,6 @@
 pragma solidity >=0.6.2;
 
-interface IOGSRouter01 {
+interface IOGXRouter01 {
     function factory() external pure returns (address);
     function WETH() external pure returns (address);
 

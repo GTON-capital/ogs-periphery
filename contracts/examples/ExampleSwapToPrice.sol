@@ -1,22 +1,22 @@
 pragma solidity =0.6.6;
 
-import '@gton-capital/ogs-core/contracts/interfaces/IOGSPair.sol';
+import '@gton-capital/ogs-core/contracts/interfaces/IOGXPair.sol';
 import '@uniswap/lib/contracts/libraries/Babylonian.sol';
 import '@uniswap/lib/contracts/libraries/TransferHelper.sol';
 
-import '../libraries/OGSLiquidityMathLibrary.sol';
+import '../libraries/OGXLiquidityMathLibrary.sol';
 import '../interfaces/IERC20.sol';
-import '../interfaces/IOGSRouter01.sol';
+import '../interfaces/IOGXRouter01.sol';
 import '../libraries/SafeMath.sol';
-import '../libraries/OGSLibrary.sol';
+import '../libraries/OGXLibrary.sol';
 
 contract ExampleSwapToPrice {
     using SafeMath for uint256;
 
-    IOGSRouter01 public immutable router;
+    IOGXRouter01 public immutable router;
     address public immutable factory;
 
-    constructor(address factory_, IOGSRouter01 router_) public {
+    constructor(address factory_, IOGXRouter01 router_) public {
         factory = factory_;
         router = router_;
     }
@@ -42,8 +42,8 @@ contract ExampleSwapToPrice {
         bool aToB;
         uint256 amountIn;
         {
-            (uint256 reserveA, uint256 reserveB) = OGSLibrary.getReserves(factory, tokenA, tokenB);
-            (aToB, amountIn) = OGSLiquidityMathLibrary.computeProfitMaximizingTrade(
+            (uint256 reserveA, uint256 reserveB) = OGXLibrary.getReserves(factory, tokenA, tokenB);
+            (aToB, amountIn) = OGXLiquidityMathLibrary.computeProfitMaximizingTrade(
                 truePriceTokenA, truePriceTokenB,
                 reserveA, reserveB
             );

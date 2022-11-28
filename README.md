@@ -1,6 +1,6 @@
-# OGS - periphery contracts
+# OGX - periphery contracts
 
-OGS is a fork of Uniswap [uniswap.org](https://uniswap.org/docs).
+OGX is a fork of Uniswap [uniswap.org](https://uniswap.org/docs).
 
 # Local Development
 

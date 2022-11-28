@@ -1,19 +1,19 @@
 pragma solidity =0.6.6;
 
-import '@gton-capital/ogs-core/contracts/interfaces/IOGSFactory.sol';
+import '@gton-capital/ogs-core/contracts/interfaces/IOGXFactory.sol';
 import '@uniswap/lib/contracts/libraries/TransferHelper.sol';
 
-import './libraries/OGSLibrary.sol';
-import './interfaces/IOGSRouter01.sol';
+import './libraries/OGXLibrary.sol';
+import './interfaces/IOGXRouter01.sol';
 import './interfaces/IERC20.sol';
 import './interfaces/IWETH.sol';
 
-contract OGSRouter01 is IOGSRouter01 {
+contract OGXRouter01 is IOGXRouter01 {
     address public immutable override factory;
     address public immutable override WETH;
 
     modifier ensure(uint deadline) {
-        require(deadline >= block.timestamp, 'OGSRouter: EXPIRED');
+        require(deadline >= block.timestamp, 'OGXRouter: EXPIRED');
         _;
     }
 
@@ -36,21 +36,21 @@ contract OGSRouter01 is IOGSRouter01 {
         uint amountBMin
     ) private returns (uint amountA, uint amountB) {
         // create the pair if it doesn't exist yet
-        if (IOGSFactory(factory).getPair(tokenA, tokenB) == address(0)) {
-            IOGSFactory(factory).createPair(tokenA, tokenB);
+        if (IOGXFactory(factory).getPair(tokenA, tokenB) == address(0)) {
+            IOGXFactory(factory).createPair(tokenA, tokenB);
         }
-        (uint reserveA, uint reserveB) = OGSLibrary.getReserves(factory, tokenA, tokenB);
+        (uint reserveA, uint reserveB) = OGXLibrary.getReserves(factory, tokenA, tokenB);
         if (reserveA == 0 && reserveB == 0) {
             (amountA, amountB) = (amountADesired, amountBDesired);
         } else {
-            uint amountBOptimal = OGSLibrary.quote(amountADesired, reserveA, reserveB);
+            uint amountBOptimal = OGXLibrary.quote(amountADesired, reserveA, reserveB);
             if (amountBOptimal <= amountBDesired) {
-                require(amountBOptimal >= amountBMin, 'OGSRouter: INSUFFICIENT_B_AMOUNT');
+                require(amountBOptimal >= amountBMin, 'OGXRouter: INSUFFICIENT_B_AMOUNT');
                 (amountA, amountB) = (amountADesired, amountBOptimal);
             } else {
-                uint amountAOptimal = OGSLibrary.quote(amountBDesired, reserveB, reserveA);
+                uint amountAOptimal = OGXLibrary.quote(amountBDesired, reserveB, reserveA);
                 assert(amountAOptimal <= amountADesired);
-                require(amountAOptimal >= amountAMin, 'OGSRouter: INSUFFICIENT_A_AMOUNT');
+                require(amountAOptimal >= amountAMin, 'OGXRouter: INSUFFICIENT_A_AMOUNT');
                 (amountA, amountB) = (amountAOptimal, amountBDesired);
             }
         }
@@ -66,10 +66,10 @@ contract OGSRouter01 is IOGSRouter01 {
         uint deadline
     ) external override ensure(deadline) returns (uint amountA, uint amountB, uint liquidity) {
         (amountA, amountB) = _addLiquidity(tokenA, tokenB, amountADesired, amountBDesired, amountAMin, amountBMin);
-        address pair = OGSLibrary.pairFor(factory, tokenA, tokenB);
+        address pair = OGXLibrary.pairFor(factory, tokenA, tokenB);
         TransferHelper.safeTransferFrom(tokenA, msg.sender, pair, amountA);
         TransferHelper.safeTransferFrom(tokenB, msg.sender, pair, amountB);
-        liquidity = IOGSPair(pair).mint(to);
+        liquidity = IOGXPair(pair).mint(to);
     }
     function addLiquidityETH(
         address token,
@@ -87,11 +87,11 @@ contract OGSRouter01 is IOGSRouter01 {
             amountTokenMin,
             amountETHMin
         );
-        address pair = OGSLibrary.pairFor(factory, token, WETH);
+        address pair = OGXLibrary.pairFor(factory, token, WETH);
         TransferHelper.safeTransferFrom(token, msg.sender, pair, amountToken);
         IWETH(WETH).deposit{value: amountETH}();
         assert(IWETH(WETH).transfer(pair, amountETH));
-        liquidity = IOGSPair(pair).mint(to);
+        liquidity = IOGXPair(pair).mint(to);
         if (msg.value > amountETH) TransferHelper.safeTransferETH(msg.sender, msg.value - amountETH); // refund dust eth, if any
     }
 
@@ -105,13 +105,13 @@ contract OGSRouter01 is IOGSRouter01 {
         address to,
         uint deadline
     ) public override ensure(deadline) returns (uint amountA, uint amountB) {
-        address pair = OGSLibrary.pairFor(factory, tokenA, tokenB);
-        IOGSPair(pair).transferFrom(msg.sender, pair, liquidity); // send liquidity to pair
-        (uint amount0, uint amount1) = IOGSPair(pair).burn(to);
-        (address token0,) = OGSLibrary.sortTokens(tokenA, tokenB);
+        address pair = OGXLibrary.pairFor(factory, tokenA, tokenB);
+        IOGXPair(pair).transferFrom(msg.sender, pair, liquidity); // send liquidity to pair
+        (uint amount0, uint amount1) = IOGXPair(pair).burn(to);
+        (address token0,) = OGXLibrary.sortTokens(tokenA, tokenB);
         (amountA, amountB) = tokenA == token0 ? (amount0, amount1) : (amount1, amount0);
-        require(amountA >= amountAMin, 'OGSRouter: INSUFFICIENT_A_AMOUNT');
-        require(amountB >= amountBMin, 'OGSRouter: INSUFFICIENT_B_AMOUNT');
+        require(amountA >= amountAMin, 'OGXRouter: INSUFFICIENT_A_AMOUNT');
+        require(amountB >= amountBMin, 'OGXRouter: INSUFFICIENT_B_AMOUNT');
     }
     function removeLiquidityETH(
         address token,
@@ -144,9 +144,9 @@ contract OGSRouter01 is IOGSRouter01 {
         uint deadline,
         bool approveMax, uint8 v, bytes32 r, bytes32 s
     ) external override returns (uint amountA, uint amountB) {
-        address pair = OGSLibrary.pairFor(factory, tokenA, tokenB);
+        address pair = OGXLibrary.pairFor(factory, tokenA, tokenB);
         uint value = approveMax ? uint(-1) : liquidity;
-        IOGSPair(pair).permit(msg.sender, address(this), value, deadline, v, r, s);
+        IOGXPair(pair).permit(msg.sender, address(this), value, deadline, v, r, s);
         (amountA, amountB) = removeLiquidity(tokenA, tokenB, liquidity, amountAMin, amountBMin, to, deadline);
     }
     function removeLiquidityETHWithPermit(
@@ -158,9 +158,9 @@ contract OGSRouter01 is IOGSRouter01 {
         uint deadline,
         bool approveMax, uint8 v, bytes32 r, bytes32 s
     ) external override returns (uint amountToken, uint amountETH) {
-        address pair = OGSLibrary.pairFor(factory, token, WETH);
+        address pair = OGXLibrary.pairFor(factory, token, WETH);
         uint value = approveMax ? uint(-1) : liquidity;
-        IOGSPair(pair).permit(msg.sender, address(this), value, deadline, v, r, s);
+        IOGXPair(pair).permit(msg.sender, address(this), value, deadline, v, r, s);
         (amountToken, amountETH) = removeLiquidityETH(token, liquidity, amountTokenMin, amountETHMin, to, deadline);
     }
 
@@ -169,11 +169,11 @@ contract OGSRouter01 is IOGSRouter01 {
     function _swap(uint[] memory amounts, address[] memory path, address _to) private {
         for (uint i; i < path.length - 1; i++) {
             (address input, address output) = (path[i], path[i + 1]);
-            (address token0,) = OGSLibrary.sortTokens(input, output);
+            (address token0,) = OGXLibrary.sortTokens(input, output);
             uint amountOut = amounts[i + 1];
             (uint amount0Out, uint amount1Out) = input == token0 ? (uint(0), amountOut) : (amountOut, uint(0));
-            address to = i < path.length - 2 ? OGSLibrary.pairFor(factory, output, path[i + 2]) : _to;
-            IOGSPair(OGSLibrary.pairFor(factory, input, output)).swap(amount0Out, amount1Out, to, new bytes(0));
+            address to = i < path.length - 2 ? OGXLibrary.pairFor(factory, output, path[i + 2]) : _to;
+            IOGXPair(OGXLibrary.pairFor(factory, input, output)).swap(amount0Out, amount1Out, to, new bytes(0));
         }
     }
     function swapExactTokensForTokens(
@@ -183,9 +183,9 @@ contract OGSRouter01 is IOGSRouter01 {
         address to,
         uint deadline
     ) external override ensure(deadline) returns (uint[] memory amounts) {
-        amounts = OGSLibrary.getAmountsOut(factory, amountIn, path);
-        require(amounts[amounts.length - 1] >= amountOutMin, 'OGSRouter: INSUFFICIENT_OUTPUT_AMOUNT');
-        TransferHelper.safeTransferFrom(path[0], msg.sender, OGSLibrary.pairFor(factory, path[0], path[1]), amounts[0]);
+        amounts = OGXLibrary.getAmountsOut(factory, amountIn, path);
+        require(amounts[amounts.length - 1] >= amountOutMin, 'OGXRouter: INSUFFICIENT_OUTPUT_AMOUNT');
+        TransferHelper.safeTransferFrom(path[0], msg.sender, OGXLibrary.pairFor(factory, path[0], path[1]), amounts[0]);
         _swap(amounts, path, to);
     }
     function swapTokensForExactTokens(
@@ -195,9 +195,9 @@ contract OGSRouter01 is IOGSRouter01 {
         address to,
         uint deadline
     ) external override ensure(deadline) returns (uint[] memory amounts) {
-        amounts = OGSLibrary.getAmountsIn(factory, amountOut, path);
-        require(amounts[0] <= amountInMax, 'OGSRouter: EXCESSIVE_INPUT_AMOUNT');
-        TransferHelper.safeTransferFrom(path[0], msg.sender, OGSLibrary.pairFor(factory, path[0], path[1]), amounts[0]);
+        amounts = OGXLibrary.getAmountsIn(factory, amountOut, path);
+        require(amounts[0] <= amountInMax, 'OGXRouter: EXCESSIVE_INPUT_AMOUNT');
+        TransferHelper.safeTransferFrom(path[0], msg.sender, OGXLibrary.pairFor(factory, path[0], path[1]), amounts[0]);
         _swap(amounts, path, to);
     }
     function swapExactETHForTokens(uint amountOutMin, address[] calldata path, address to, uint deadline)
@@ -207,11 +207,11 @@ contract OGSRouter01 is IOGSRouter01 {
         ensure(deadline)
         returns (uint[] memory amounts)
     {
-        require(path[0] == WETH, 'OGSRouter: INVALID_PATH');
-        amounts = OGSLibrary.getAmountsOut(factory, msg.value, path);
-        require(amounts[amounts.length - 1] >= amountOutMin, 'OGSRouter: INSUFFICIENT_OUTPUT_AMOUNT');
+        require(path[0] == WETH, 'OGXRouter: INVALID_PATH');
+        amounts = OGXLibrary.getAmountsOut(factory, msg.value, path);
+        require(amounts[amounts.length - 1] >= amountOutMin, 'OGXRouter: INSUFFICIENT_OUTPUT_AMOUNT');
         IWETH(WETH).deposit{value: amounts[0]}();
-        assert(IWETH(WETH).transfer(OGSLibrary.pairFor(factory, path[0], path[1]), amounts[0]));
+        assert(IWETH(WETH).transfer(OGXLibrary.pairFor(factory, path[0], path[1]), amounts[0]));
         _swap(amounts, path, to);
     }
     function swapTokensForExactETH(uint amountOut, uint amountInMax, address[] calldata path, address to, uint deadline)
@@ -220,10 +220,10 @@ contract OGSRouter01 is IOGSRouter01 {
         ensure(deadline)
         returns (uint[] memory amounts)
     {
-        require(path[path.length - 1] == WETH, 'OGSRouter: INVALID_PATH');
-        amounts = OGSLibrary.getAmountsIn(factory, amountOut, path);
-        require(amounts[0] <= amountInMax, 'OGSRouter: EXCESSIVE_INPUT_AMOUNT');
-        TransferHelper.safeTransferFrom(path[0], msg.sender, OGSLibrary.pairFor(factory, path[0], path[1]), amounts[0]);
+        require(path[path.length - 1] == WETH, 'OGXRouter: INVALID_PATH');
+        amounts = OGXLibrary.getAmountsIn(factory, amountOut, path);
+        require(amounts[0] <= amountInMax, 'OGXRouter: EXCESSIVE_INPUT_AMOUNT');
+        TransferHelper.safeTransferFrom(path[0], msg.sender, OGXLibrary.pairFor(factory, path[0], path[1]), amounts[0]);
         _swap(amounts, path, address(this));
         IWETH(WETH).withdraw(amounts[amounts.length - 1]);
         TransferHelper.safeTransferETH(to, amounts[amounts.length - 1]);
@@ -234,10 +234,10 @@ contract OGSRouter01 is IOGSRouter01 {
         ensure(deadline)
         returns (uint[] memory amounts)
     {
-        require(path[path.length - 1] == WETH, 'OGSRouter: INVALID_PATH');
-        amounts = OGSLibrary.getAmountsOut(factory, amountIn, path);
-        require(amounts[amounts.length - 1] >= amountOutMin, 'OGSRouter: INSUFFICIENT_OUTPUT_AMOUNT');
-        TransferHelper.safeTransferFrom(path[0], msg.sender, OGSLibrary.pairFor(factory, path[0], path[1]), amounts[0]);
+        require(path[path.length - 1] == WETH, 'OGXRouter: INVALID_PATH');
+        amounts = OGXLibrary.getAmountsOut(factory, amountIn, path);
+        require(amounts[amounts.length - 1] >= amountOutMin, 'OGXRouter: INSUFFICIENT_OUTPUT_AMOUNT');
+        TransferHelper.safeTransferFrom(path[0], msg.sender, OGXLibrary.pairFor(factory, path[0], path[1]), amounts[0]);
         _swap(amounts, path, address(this));
         IWETH(WETH).withdraw(amounts[amounts.length - 1]);
         TransferHelper.safeTransferETH(to, amounts[amounts.length - 1]);
@@ -249,32 +249,32 @@ contract OGSRouter01 is IOGSRouter01 {
         ensure(deadline)
         returns (uint[] memory amounts)
     {
-        require(path[0] == WETH, 'OGSRouter: INVALID_PATH');
-        amounts = OGSLibrary.getAmountsIn(factory, amountOut, path);
-        require(amounts[0] <= msg.value, 'OGSRouter: EXCESSIVE_INPUT_AMOUNT');
+        require(path[0] == WETH, 'OGXRouter: INVALID_PATH');
+        amounts = OGXLibrary.getAmountsIn(factory, amountOut, path);
+        require(amounts[0] <= msg.value, 'OGXRouter: EXCESSIVE_INPUT_AMOUNT');
         IWETH(WETH).deposit{value: amounts[0]}();
-        assert(IWETH(WETH).transfer(OGSLibrary.pairFor(factory, path[0], path[1]), amounts[0]));
+        assert(IWETH(WETH).transfer(OGXLibrary.pairFor(factory, path[0], path[1]), amounts[0]));
         _swap(amounts, path, to);
         if (msg.value > amounts[0]) TransferHelper.safeTransferETH(msg.sender, msg.value - amounts[0]); // refund dust eth, if any
     }
 
     function quote(uint amountA, uint reserveA, uint reserveB) public pure override returns (uint amountB) {
-        return OGSLibrary.quote(amountA, reserveA, reserveB);
+        return OGXLibrary.quote(amountA, reserveA, reserveB);
     }
 
     function getAmountOut(uint amountIn, uint reserveIn, uint reserveOut) public pure override returns (uint amountOut) {
-        return OGSLibrary.getAmountOut(amountIn, reserveIn, reserveOut);
+        return OGXLibrary.getAmountOut(amountIn, reserveIn, reserveOut);
     }
 
     function getAmountIn(uint amountOut, uint reserveIn, uint reserveOut) public pure override returns (uint amountIn) {
-        return OGSLibrary.getAmountOut(amountOut, reserveIn, reserveOut);
+        return OGXLibrary.getAmountOut(amountOut, reserveIn, reserveOut);
     }
 
     function getAmountsOut(uint amountIn, address[] memory path) public view override returns (uint[] memory amounts) {
-        return OGSLibrary.getAmountsOut(factory, amountIn, path);
+        return OGXLibrary.getAmountsOut(factory, amountIn, path);
     }
 
     function getAmountsIn(uint amountOut, address[] memory path) public view override returns (uint[] memory amounts) {
-        return OGSLibrary.getAmountsIn(factory, amountOut, path);
+        return OGXLibrary.getAmountsIn(factory, amountOut, path);
     }
 }

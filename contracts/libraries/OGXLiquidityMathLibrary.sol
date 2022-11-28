@@ -1,16 +1,16 @@
 pragma solidity >=0.5.0;
 
-import '@gton-capital/ogs-core/contracts/interfaces/IOGSPair.sol';
-import '@gton-capital/ogs-core/contracts/interfaces/IOGSFactory.sol';
+import '@gton-capital/ogs-core/contracts/interfaces/IOGXPair.sol';
+import '@gton-capital/ogs-core/contracts/interfaces/IOGXFactory.sol';
 import '@uniswap/lib/contracts/libraries/Babylonian.sol';
 import '@uniswap/lib/contracts/libraries/FullMath.sol';
 
 import './SafeMath.sol';
-import './OGSLibrary.sol';
+import './OGXLibrary.sol';
 
 // library containing some math for dealing with the liquidity shares of a pair, e.g. computing their exact value
 // in terms of the underlying tokens
-library OGSLiquidityMathLibrary {
+library OGXLiquidityMathLibrary {
     using SafeMath for uint256;
 
     // computes the direction and magnitude of the profit-maximizing trade
@@ -48,7 +48,7 @@ library OGSLiquidityMathLibrary {
         uint256 truePriceTokenB
     ) view internal returns (uint256 reserveA, uint256 reserveB) {
         // first get reserves before the swap
-        (reserveA, reserveB) = OGSLibrary.getReserves(factory, tokenA, tokenB);
+        (reserveA, reserveB) = OGXLibrary.getReserves(factory, tokenA, tokenB);
 
         require(reserveA > 0 && reserveB > 0, 'UniswapV2ArbitrageLibrary: ZERO_PAIR_RESERVES');
 
@@ -61,11 +61,11 @@ library OGSLiquidityMathLibrary {
 
         // now affect the trade to the reserves
         if (aToB) {
-            uint amountOut = OGSLibrary.getAmountOut(amountIn, reserveA, reserveB);
+            uint amountOut = OGXLibrary.getAmountOut(amountIn, reserveA, reserveB);
             reserveA += amountIn;
             reserveB -= amountOut;
         } else {
-            uint amountOut = OGSLibrary.getAmountOut(amountIn, reserveB, reserveA);
+            uint amountOut = OGXLibrary.getAmountOut(amountIn, reserveB, reserveA);
             reserveB += amountIn;
             reserveA -= amountOut;
         }
@@ -86,7 +86,7 @@ library OGSLiquidityMathLibrary {
             if (rootK > rootKLast) {
                 uint numerator1 = totalSupply;
                 uint numerator2 = rootK.sub(rootKLast);
-                uint denominator = rootK.mul(5).add(rootKLast);
+                uint denominator = rootK.mul(30).add(rootKLast);
                 uint feeLiquidity = FullMath.mulDiv(numerator1, numerator2, denominator);
                 totalSupply = totalSupply.add(feeLiquidity);
             }
@@ -103,9 +103,9 @@ library OGSLiquidityMathLibrary {
         address tokenB,
         uint256 liquidityAmount
     ) internal view returns (uint256 tokenAAmount, uint256 tokenBAmount) {
-        (uint256 reservesA, uint256 reservesB) = OGSLibrary.getReserves(factory, tokenA, tokenB);
-        IOGSPair pair = IOGSPair(OGSLibrary.pairFor(factory, tokenA, tokenB));
-        bool feeOn = IOGSFactory(factory).feeTo() != address(0);
+        (uint256 reservesA, uint256 reservesB) = OGXLibrary.getReserves(factory, tokenA, tokenB);
+        IOGXPair pair = IOGXPair(OGXLibrary.pairFor(factory, tokenA, tokenB));
+        bool feeOn = IOGXFactory(factory).feeTo() != address(0);
         uint kLast = feeOn ? pair.kLast() : 0;
         uint totalSupply = pair.totalSupply();
         return computeLiquidityValue(reservesA, reservesB, totalSupply, liquidityAmount, feeOn, kLast);
@@ -124,8 +124,8 @@ library OGSLiquidityMathLibrary {
         uint256 tokenAAmount,
         uint256 tokenBAmount
     ) {
-        bool feeOn = IOGSFactory(factory).feeTo() != address(0);
-        IOGSPair pair = IOGSPair(OGSLibrary.pairFor(factory, tokenA, tokenB));
+        bool feeOn = IOGXFactory(factory).feeTo() != address(0);
+        IOGXPair pair = IOGXPair(OGXLibrary.pairFor(factory, tokenA, tokenB));
         uint kLast = feeOn ? pair.kLast() : 0;
         uint totalSupply = pair.totalSupply();
 

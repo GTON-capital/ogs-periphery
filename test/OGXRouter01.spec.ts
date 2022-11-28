@@ -15,11 +15,11 @@ const overrides = {
 }
 
 enum RouterVersion {
-  OGSRouter01 = 'OGSRouter01',
-  OGSRouter02 = 'OGSRouter02'
+  OGXRouter01 = 'OGXRouter01',
+  OGXRouter02 = 'OGXRouter02'
 }
 
-describe('OGSRouter{01,02}', () => {
+describe('OGXRouter{01,02}', () => {
   for (const routerVersion of Object.keys(RouterVersion)) {
     const provider = new MockProvider({
       hardfork: 'istanbul',
@@ -46,8 +46,8 @@ describe('OGSRouter{01,02}', () => {
       WETHPartner = fixture.WETHPartner
       factory = fixture.factoryV2
       router = {
-        [RouterVersion.OGSRouter01]: fixture.router01,
-        [RouterVersion.OGSRouter02]: fixture.router02
+        [RouterVersion.OGXRouter01]: fixture.router01,
+        [RouterVersion.OGXRouter02]: fixture.router02
       }[routerVersion as RouterVersion]
       pair = fixture.pair
       WETHPair = fixture.WETHPair
@@ -368,8 +368,8 @@ describe('OGSRouter{01,02}', () => {
           const receipt = await tx.wait()
           expect(receipt.gasUsed).to.eq(
             {
-              [RouterVersion.OGSRouter01]: 101876,
-              [RouterVersion.OGSRouter02]: 101898
+              [RouterVersion.OGXRouter01]: 101876,
+              [RouterVersion.OGXRouter02]: 101898
             }[routerVersion as RouterVersion]
           )
         }).retries(3)
@@ -517,8 +517,8 @@ describe('OGSRouter{01,02}', () => {
           const receipt = await tx.wait()
           expect(receipt.gasUsed).to.eq(
             {
-              [RouterVersion.OGSRouter01]: 138770,
-              [RouterVersion.OGSRouter02]: 138770
+              [RouterVersion.OGXRouter01]: 138770,
+              [RouterVersion.OGXRouter02]: 138770
             }[routerVersion as RouterVersion]
           )
         }).retries(3)

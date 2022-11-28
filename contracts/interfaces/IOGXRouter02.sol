@@ -1,8 +1,8 @@
 pragma solidity >=0.6.2;
 
-import './IOGSRouter01.sol';
+import './IOGXRouter01.sol';
 
-interface IOGSRouter02 is IOGSRouter01 {
+interface IOGXRouter02 is IOGXRouter01 {
     function removeLiquidityETHSupportingFeeOnTransferTokens(
         address token,
         uint liquidity,

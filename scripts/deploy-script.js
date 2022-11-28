@@ -2,10 +2,10 @@ const { ethers } = require('hardhat')
 const hre = require('hardhat')
 const { config } = require('./config.js')
 
-let constructorArgs = [config.OGSFactory, config.WGCD]
+let constructorArgs = [config.OGXFactory, config.WGCD]
 // Deploy function
 async function deploy() {
-  console.log('Config:', config.OGSFactory, config.WGCD)
+  console.log('Config:', config.OGXFactory, config.WGCD)
   let deployer = await getDeployer()
   let deployerAddress = deployer.address
 
@@ -20,12 +20,12 @@ async function getDeployer() {
   return deployer
 }
 
-async function verify(_contractAddress, ...args) {
+async function verify(_contractAddress, args) {
   try {
     console.log('Verifying contract...')
     await hre.run('verify:verify', {
       address: _contractAddress,
-      constructorArguments: [...args]
+      constructorArguments: args
     })
   } catch (err) {
     if (err.message.includes('Reason: Already Verified')) {
@@ -41,24 +41,24 @@ async function delay(ms) {
 }
 
 async function deployRouter01() {
-  const contract = await ethers.getContractFactory('OGSRouter01')
-  const contractInstance = await contract.deploy(config.OGSFactory, config.WGCD)
+  const contract = await ethers.getContractFactory('OGXRouter01')
+  const contractInstance = await contract.deploy(config.OGXFactory, config.WGCD)
   await contractInstance.deployed()
   const contractAddress = contractInstance.address
 
-  console.log(`OGSRouter01 deployed to: ${contractAddress}`)
+  console.log(`OGXRouter01 deployed to: ${contractAddress}`)
 
   await delay(20000)
   await verify(contractAddress, constructorArgs)
 }
 
 async function deployRouter02() {
-  const contract = await ethers.getContractFactory('OGSRouter02')
-  const contractInstance = await contract.deploy(config.OGSFactory, config.WGCD)
+  const contract = await ethers.getContractFactory('OGXRouter02')
+  const contractInstance = await contract.deploy(config.OGXFactory, config.WGCD)
   await contractInstance.deployed()
   const contractAddress = contractInstance.address
 
-  console.log(`OGSRouter02 deployed to: ${contractAddress}`)
+  console.log(`OGXRouter02 deployed to: ${contractAddress}`)
 
   await delay(20000)
   await verify(contractAddress, constructorArgs)

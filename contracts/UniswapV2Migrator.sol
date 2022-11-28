@@ -5,16 +5,16 @@ import '@uniswap/lib/contracts/libraries/TransferHelper.sol';
 import './interfaces/IUniswapV2Migrator.sol';
 import './interfaces/V1/IUniswapV1Factory.sol';
 import './interfaces/V1/IUniswapV1Exchange.sol';
-import './interfaces/IOGSRouter01.sol';
+import './interfaces/IOGXRouter01.sol';
 import './interfaces/IERC20.sol';
 
 contract UniswapV2Migrator is IUniswapV2Migrator {
     IUniswapV1Factory immutable factoryV1;
-    IOGSRouter01 immutable router;
+    IOGXRouter01 immutable router;
 
     constructor(address _factoryV1, address _router) public {
         factoryV1 = IUniswapV1Factory(_factoryV1);
-        router = IOGSRouter01(_router);
+        router = IOGXRouter01(_router);
     }
 
     // needs to accept ETH from any v1 exchange and the router. ideally this could be enforced, as in the router,
