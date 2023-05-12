@@ -1,6 +1,6 @@
 {
-  "name": "@gton-capital/ogs-periphery",
-  "version": "1.1.0-beta.0",
+  "name": "@gton/ogs-periphery",
+  "version": "1.1.0-beta.1",
   "description": "🎚 Peripheral smart contracts for interacting with OGX",
   "engines": {
     "node": ">=10"
@@ -15,7 +15,7 @@
     "contracts"
   ],
   "dependencies": {
-    "@gton-capital/ogs-core": "gton-capital/ogs-core#33cd466",
+    "@gton/ogs-core": "^1.0.1",
     "@uniswap/lib": "4.0.1-alpha"
   },
   "devDependencies": {

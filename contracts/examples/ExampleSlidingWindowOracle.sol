@@ -1,7 +1,7 @@
 pragma solidity =0.6.6;
 
-import '@gton-capital/ogs-core/contracts/interfaces/IOGXFactory.sol';
-import '@gton-capital/ogs-core/contracts/interfaces/IOGXPair.sol';
+import '@gton/ogs-core/contracts/interfaces/IOGXFactory.sol';
+import '@gton/ogs-core/contracts/interfaces/IOGXPair.sol';
 import '@uniswap/lib/contracts/libraries/FixedPoint.sol';
 
 import '../libraries/SafeMath.sol';

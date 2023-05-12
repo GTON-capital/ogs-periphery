@@ -1,6 +1,6 @@
 pragma solidity >=0.5.0;
 
-import '@gton-capital/ogs-core/contracts/interfaces/IOGXPair.sol';
+import '@gton/ogs-core/contracts/interfaces/IOGXPair.sol';
 
 import "./SafeMath.sol";
 

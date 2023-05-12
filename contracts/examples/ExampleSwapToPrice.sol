@@ -1,6 +1,6 @@
 pragma solidity =0.6.6;
 
-import '@gton-capital/ogs-core/contracts/interfaces/IOGXPair.sol';
+import '@gton/ogs-core/contracts/interfaces/IOGXPair.sol';
 import '@uniswap/lib/contracts/libraries/Babylonian.sol';
 import '@uniswap/lib/contracts/libraries/TransferHelper.sol';
 

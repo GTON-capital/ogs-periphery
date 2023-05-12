@@ -1,7 +1,7 @@
 pragma solidity >=0.5.0;
 
-import '@gton-capital/ogs-core/contracts/interfaces/IOGXPair.sol';
-import '@gton-capital/ogs-core/contracts/interfaces/IOGXFactory.sol';
+import '@gton/ogs-core/contracts/interfaces/IOGXPair.sol';
+import '@gton/ogs-core/contracts/interfaces/IOGXFactory.sol';
 import '@uniswap/lib/contracts/libraries/Babylonian.sol';
 import '@uniswap/lib/contracts/libraries/FullMath.sol';
 

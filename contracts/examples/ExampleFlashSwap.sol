@@ -1,6 +1,6 @@
 pragma solidity =0.6.6;
 
-import '@gton-capital/ogs-core/contracts/interfaces/IOGXCallee.sol';
+import '@gton/ogs-core/contracts/interfaces/IOGXCallee.sol';
 
 import '../libraries/OGXLibrary.sol';
 import '../interfaces/V1/IUniswapV1Factory.sol';
